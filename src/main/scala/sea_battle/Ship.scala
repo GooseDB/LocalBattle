@@ -16,11 +16,11 @@ final case class Ship(
 
   def cells() = orientation match {
     case Horizontal() =>
-      Vector.iterate(position, decks.length) {
+      Array.iterate(position, decks.length) {
         case Coord(x, y) => Coord(x + 1, y)
       }
     case Vertical() =>
-      Vector.iterate(position, decks.length) {
+      Array.iterate(position, decks.length) {
         case Coord(x, y) => Coord(x, y + 1)
       }
   }

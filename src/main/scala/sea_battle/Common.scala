@@ -34,11 +34,11 @@ final case class ShipCreationData(
       val dcoords1 = if (index == 0) orientation match {
         case Vertical()   => Array((-1, -1), (0, -1), (1, -1))
         case Horizontal() => Array((-1, -1), (-1, 0), (-1, 1))
-      } else Array()
+      } else Array[(Int, Int)]()
       val dcoords2 = if (index + 1 == size) orientation match {
         case Vertical()   => Array((-1, 1), (0, 1), (1, 1))
         case Horizontal() => Array((1, -1), (1, 0), (1, 1))
-      } else Array()
+      } else Array[(Int,Int)]()
       val dcoords3 = orientation match {
         case Horizontal() => Array((0, -1), (0, 1))
         case Vertical()   => Array((-1, 0), (1, 0))

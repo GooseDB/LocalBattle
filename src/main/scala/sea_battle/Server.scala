@@ -55,6 +55,8 @@ object Main {
     val secondRx = new ObjectInputStream(second.getInputStream())
     println("Second player has been connected")
 
+    server.close
+
     println("Waiting to ships..")
 
     val firstShips = firstRx.readObject().asInstanceOf[Ships]

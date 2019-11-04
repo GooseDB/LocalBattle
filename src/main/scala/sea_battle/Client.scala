@@ -52,7 +52,7 @@ object Main {
       myTurn: Boolean
   ): Unit = {
     val (gameOver, fields) = if (myTurn) {
-      print("Make shot:")
+      print("Make shot: ")
       val shot = makeShot()
 
       tx.writeObject(shot)
@@ -62,7 +62,7 @@ object Main {
 
       (gameOver, fields)
     } else {
-      print("Wait..")
+      println("Wait..")
 
       val fields = rx.readObject().asInstanceOf[Array[(String, String)]]
       val gameOver = rx.readObject().asInstanceOf[GameOver]
@@ -75,10 +75,10 @@ object Main {
 
   def createShips(): Ships = {
 
-    val shipsSizes = for {
+    val shipsSizes = (for {
       shipSize <- 1 to 4
       count <- 1 to (5 - shipSize)
-    } yield shipSize
+    } yield shipSize).toArray
 
     println(Consts.inputFormatTip)
 
