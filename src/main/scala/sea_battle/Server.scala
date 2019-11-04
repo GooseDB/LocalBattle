@@ -76,6 +76,9 @@ object Main {
     val firstPlayer = Player(firstTx, firstRx, State(firstShips))
     val secondPlayer = Player(secondTx, secondRx, State(secondShips))
     Right(loop(Game(firstPlayer, secondPlayer)))
+
+    first.close
+    second.close
   }
 
   def loop(game: Game): Unit = {

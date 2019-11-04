@@ -57,14 +57,14 @@ object Main {
 
       tx.writeObject(shot)
 
-      val fields = rx.readObject().asInstanceOf[Array[(String, String)]]
+      val fields = rx.readObject().asInstanceOf[Vector[(String, String)]]
       val gameOver = rx.readObject().asInstanceOf[GameOver]
 
       (gameOver, fields)
     } else {
       println("Wait..")
 
-      val fields = rx.readObject().asInstanceOf[Array[(String, String)]]
+      val fields = rx.readObject().asInstanceOf[Vector[(String, String)]]
       val gameOver = rx.readObject().asInstanceOf[GameOver]
 
       (gameOver, fields)
@@ -78,13 +78,13 @@ object Main {
     val shipsSizes = (for {
       shipSize <- 1 to 4
       count <- 1 to (5 - shipSize)
-    } yield shipSize).toArray
+    } yield shipSize).toVector
 
     println(Consts.inputFormatTip)
 
-    drawOneField(State(Ships(Array[Ship]())).renderForMe())
+    drawOneField(State(Ships(Vector[Ship]())).renderForMe())
 
-    val ships = shipsSizes.foldLeft(Array[Ship]())((ships, shipSize) => {
+    val ships = shipsSizes.foldLeft(Vector[Ship]())((ships, shipSize) => {
       println(Consts.separator)
       println(s"Create $shipSize deck ship.")
       val newShip = ShipCreationData.createShip(ships, shipSize)
@@ -95,14 +95,14 @@ object Main {
     Ships(ships)
   }
 
-  def drawOneField(field: Array[String]) = {
+  def drawOneField(field: Vector[String]) = {
     println(Consts.scale)
     field.zipWithIndex.foreach {
       case (line, index) => printf("%2d %s\n", index + 1, line)
     }
   }
 
-  def drawTwoFields(fields: Array[(String, String)]) = {
+  def drawTwoFields(fields: Vector[(String, String)]) = {
     println(Consts.scale ++ " " ++ Consts.scale)
     fields.zipWithIndex.foreach {
       case ((my, enemy), index) =>

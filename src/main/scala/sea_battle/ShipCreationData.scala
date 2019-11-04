@@ -11,7 +11,7 @@ final case class ShipCreationData(
     orientation: Orientation,
     size: Int
 ) {
-  def validate(ships: Array[Ship]): Either[String, Ship] = {
+  def validate(ships: Vector[Ship]): Either[String, Ship] = {
 
     def withinField: Coord => Boolean = {
       case Coord(x, y) =>
@@ -21,7 +21,7 @@ final case class ShipCreationData(
     def shiftCell(coord: Coord, dx: Int, dy: Int): Coord =
       Coord(coord.x + dx, coord.y + dy)
 
-    def buildShitedCells(coord: Coord, d: Array[(Int, Int)]): Array[Coord] =
+    def buildShitedCells(coord: Coord, d: Vector[(Int, Int)]): Vector[Coord] =
       d.map(d => shiftCell(coord, d._1, d._2))
 
     lazy val shipCells =
@@ -32,16 +32,16 @@ final case class ShipCreationData(
     lazy val shipDoesNotCrossOthers = shipCells.zipWithIndex.forall { v =>
       val (coord, index) = v
       val dcoords1 = if (index == 0) orientation match {
-        case Vertical()   => Array((-1, -1), (0, -1), (1, -1))
-        case Horizontal() => Array((-1, -1), (-1, 0), (-1, 1))
-      } else Array[(Int, Int)]()
+        case Vertical()   => Vector((-1, -1), (0, -1), (1, -1))
+        case Horizontal() => Vector((-1, -1), (-1, 0), (-1, 1))
+      } else Vector[(Int, Int)]()
       val dcoords2 = if (index + 1 == size) orientation match {
-        case Vertical()   => Array((-1, 1), (0, 1), (1, 1))
-        case Horizontal() => Array((1, -1), (1, 0), (1, 1))
-      } else Array[(Int,Int)]()
+        case Vertical()   => Vector((-1, 1), (0, 1), (1, 1))
+        case Horizontal() => Vector((1, -1), (1, 0), (1, 1))
+      } else Vector[(Int,Int)]()
       val dcoords3 = orientation match {
-        case Horizontal() => Array((0, -1), (0, 1))
-        case Vertical()   => Array((-1, 0), (1, 0))
+        case Horizontal() => Vector((0, -1), (0, 1))
+        case Vertical()   => Vector((-1, 0), (1, 0))
       }
       val shifted = buildShitedCells(coord, dcoords1 ++ dcoords2 ++ dcoords3)
 
@@ -56,14 +56,14 @@ final case class ShipCreationData(
 object ShipCreationData {
   @scala.annotation.tailrec
   def createShip(
-      ships: Array[Ship],
+      ships: Vector[Ship],
       size: Int
   ): Ship = {
-    def validateLength: Array[String] => Either[String, Array[String]] =
+    def validateLength: Vector[String] => Either[String, Vector[String]] =
       input => if (input.length == 2) Right(input) else Left("Wrong format")
 
-    def validateFormat: Array[String] => Either[String, ShipCreationData] = {
-      case Array(rawC, rawO) => {
+    def validateFormat: Vector[String] => Either[String, ShipCreationData] = {
+      case Vector(rawC, rawO) => {
         for {
           coord <- Coord.validate(rawC)
           orientation <- Orientation.validate(rawO)
@@ -71,7 +71,7 @@ object ShipCreationData {
       }
     }
 
-    val input = scala.io.StdIn.readLine.split(" ").filter(_ != "")
+    val input = scala.io.StdIn.readLine.split(" ").toVector.filter(_ != "")
 
     val result = validateLength(input)
       .flatMap(validateFormat(_))

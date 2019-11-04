@@ -15,7 +15,7 @@ final case class State(ships: Ships, field: Field = Field.default()) {
 
   private def render(
       renderF: (Option[(Coord, Deck)], Int, Int) => Char
-  ): Array[String] = {
+  ): Vector[String] = {
     val shipsDecks = ships.allDecks()
     val chars = for {
       y <- 0 until Consts.fieldSideSize
@@ -23,12 +23,12 @@ final case class State(ships: Ships, field: Field = Field.default()) {
     } yield renderF((shipsDecks.find(deck => deck._1 == Coord(x, y))), x, y)
     chars
       .grouped(10)
-      .foldLeft(Array[String]())(
+      .foldLeft(Vector[String]())(
         (acc, line) =>
           acc :+ line.foldLeft("")((acc, char) => acc :+ char :+ ' ')
       )
   }
-  def renderForMe(): Array[String] = {
+  def renderForMe(): Vector[String] = {
     render {
       case (mbDeck, x, y) =>
         mbDeck match {
@@ -37,7 +37,7 @@ final case class State(ships: Ships, field: Field = Field.default()) {
         }
     }
   }
-  def renderForEnemy(): Array[String] = {
+  def renderForEnemy(): Vector[String] = {
     render {
       case (mbDeck, x, y) =>
         mbDeck match {
