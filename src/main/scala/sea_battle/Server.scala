@@ -3,20 +3,12 @@ package sea_battle.server
 import java.net.ServerSocket
 import java.net.SocketException
 import java.io.{ObjectOutputStream, ObjectInputStream}
-import scala.annotation.tailrec
 
 import sea_battle.player.{Player, State}
 import sea_battle.game_over.GameOver
 import sea_battle.ship.Ships
 
-final case class Game(active: Player, waiting: Player) {
-  @tailrec
-  def run(): Game = {
-    val shot = active.makeShot()
-    val shotWaiting = waiting.shot(shot)
-    if (shotWaiting.isAlive()) Game(shotWaiting, active).run() else this
-  }
-}
+final case class Game(active: Player, waiting: Player)
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -75,10 +67,10 @@ object Main {
 
     val firstPlayer = Player(firstTx, firstRx, State(firstShips))
     val secondPlayer = Player(secondTx, secondRx, State(secondShips))
-    Right(loop(Game(firstPlayer, secondPlayer)))
-
+    loop(Game(firstPlayer, secondPlayer))
     first.close
     second.close
+    Right(())
   }
 
   def loop(game: Game): Unit = {
