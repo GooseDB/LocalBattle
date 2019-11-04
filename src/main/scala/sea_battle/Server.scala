@@ -57,7 +57,7 @@ object Main {
 
     server.close
 
-    println("Waiting to ships..")
+    println("Waiting for ships..")
 
     val firstShips = firstRx.readObject().asInstanceOf[Ships]
     println("First ships has been recieved")
