@@ -1,9 +1,10 @@
 package sea_battle.common
 
-import sea_battle.entities.{Coord, Orientation, Ship}
+import sea_battle.coord.Coord
 import sea_battle.consts.Consts
-import sea_battle.entities.Orientation.Vertical
-import sea_battle.entities.Orientation.Horizontal
+import sea_battle.ship.Ship
+import sea_battle.orientation.Orientation.{Horizontal, Vertical}
+import sea_battle.orientation.Orientation
 
 final case class ShipCreationData(
     position: Coord,

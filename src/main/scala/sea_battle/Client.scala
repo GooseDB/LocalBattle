@@ -2,21 +2,15 @@ package sea_battle.client
 
 import java.net.Socket
 import java.net.InetSocketAddress
-import java.io.ObjectInput
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
-import scala.io.StdIn
+import java.io.{ObjectOutputStream, ObjectInputStream}
+import scala.annotation.tailrec
 
 import sea_battle.common.ShipCreationData
-import sea_battle.entities.{Orientation, Coord, Ship, Player, Field, Ships}
+import sea_battle.player.State
+import sea_battle.coord.Coord
 import sea_battle.consts.Consts
-import sea_battle.entities.Player
-import sea_battle.entities.Orientation.Horizontal
-import sea_battle.entities.State
-import scala.annotation.tailrec
-import sea_battle.entities.Orientation.Vertical
-import sea_battle.entities.GameOver
-import sea_battle.server.Game
+import sea_battle.game_over.GameOver
+import sea_battle.ship.{Ships, Ship}
 
 object Main {
   def main(args: Array[String]): Unit = {

@@ -1,48 +1,44 @@
 package sea_battle.server
 
-import scala.annotation.tailrec
 import java.net.ServerSocket
 import java.net.SocketException
+import java.io.{ObjectOutputStream, ObjectInputStream}
+import scala.annotation.tailrec
 
-import sea_battle.entities.Player
-import java.io.ObjectOutputStream
-import java.io.ObjectInputStream
-import sea_battle.entities.Ships
-import sea_battle.entities.State
-import sea_battle.entities.Field
-import sea_battle.entities.GameOver._
-import sea_battle.entities.GameOver
+import sea_battle.player.{Player, State}
+import sea_battle.game_over.GameOver
+import sea_battle.ship.Ships
 
 final case class Game(active: Player, waiting: Player) {
-    @tailrec
-    def run(): Game = {
-        val shot = active.makeShot()
-        val shotWaiting = waiting.shot(shot)
-        if (shotWaiting.isAlive()) Game(shotWaiting, active).run() else this
-    }
+  @tailrec
+  def run(): Game = {
+    val shot = active.makeShot()
+    val shotWaiting = waiting.shot(shot)
+    if (shotWaiting.isAlive()) Game(shotWaiting, active).run() else this
+  }
 }
 
 object Main {
-    def main(args: Array[String]): Unit = {
-        val message = args.headOption
-        .map(_.toIntOption)
-        .flatten
-        .map(port => runServer(port)) match {
-        case Some(Right(())) => "Bye :)"
-        case Some(Left(err)) => s"Sorry, $err"
-        case None            => "Port for server is required and must be integer :("
-        }
-        println(message)
+  def main(args: Array[String]): Unit = {
+    val message = args.headOption
+      .map(_.toIntOption)
+      .flatten
+      .map(port => runServer(port)) match {
+      case Some(Right(())) => "Bye :)"
+      case Some(Left(err)) => s"Sorry, $err"
+      case None            => "Port for server is required and must be integer :("
+    }
+    println(message)
   }
 
   def runServer(port: Int): Either[String, Unit] = {
 
     val server = try {
-        new ServerSocket(port)
+      new ServerSocket(port)
     } catch {
-        case e: IllegalArgumentException => return Left("Illegal port")
-        case e: SocketException =>
-            return Left(s"Unable to create socket: ${e.getMessage()}")
+      case e: IllegalArgumentException => return Left("Illegal port")
+      case e: SocketException =>
+        return Left(s"Unable to create socket: ${e.getMessage()}")
     }
 
     println("Waiting for players..")
@@ -80,7 +76,7 @@ object Main {
     Right(loop(Game(firstPlayer, secondPlayer)))
   }
 
-  def loop(game: Game) {
+  def loop(game: Game): Unit = {
     val shot = game.active.makeShot()
     println(s"Got shot: $shot")
 
