@@ -5,7 +5,7 @@ import java.net.InetSocketAddress
 import java.io.{ObjectOutputStream, ObjectInputStream}
 import scala.annotation.tailrec
 
-import sea_battle.common.ShipCreationData
+import sea_battle.ship_creation_data.ShipCreationData
 import sea_battle.player.State
 import sea_battle.coord.Coord
 import sea_battle.consts.Consts

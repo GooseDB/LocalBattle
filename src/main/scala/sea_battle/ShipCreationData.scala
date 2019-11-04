@@ -1,4 +1,4 @@
-package sea_battle.common
+package sea_battle.ship_creation_data
 
 import sea_battle.coord.Coord
 import sea_battle.consts.Consts
